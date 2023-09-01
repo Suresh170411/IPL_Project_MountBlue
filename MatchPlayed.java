@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MatchPlayed {
@@ -26,7 +28,8 @@ public class MatchPlayed {
         //================================================================================================================
 
         //For the year 2016 get the extra runs conceded per team.
-        extraRunForTheYear(deliveriesPath);
+        extraRunForTheYear(matchPath , deliveriesPath);
+        
 
 
     }
@@ -97,10 +100,13 @@ public class MatchPlayed {
     }
 
     //For the year 2016 get the extra runs conceded per team.
-    public static void extraRunForTheYear(String path){
-        HashMap<String, Integer> extraRun = new HashMap<>();
+    public static void extraRunForTheYear(String matchPath , String deliveriesPath){
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        //This section will read the matches.csv file
+
+        List<Integer> matchIdList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(matchPath))) {
             
             String line;
 
@@ -110,17 +116,59 @@ public class MatchPlayed {
 
                 String[] parts = line.split(",");
                 
-                // int year = 
+                int year = Integer.parseInt(parts[1]);
 
-                extraRun.put(parts[17], extraRun.getOrDefault(parts[17], 0) + 1);
+                // Mapping year of match file with match_id of deliveries file and adding ids in the matchIdList
+                if (year == 2016){
+                    matchIdList.add(Integer.parseInt(parts[0]));
+                }
 
             }
 
-            System.out.println(extraRun);
             br.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        //This section will read the deliveries.csv file
+
+        List<Integer> runsList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(deliveriesPath))) {
+            
+            String line;
+
+            br.readLine();
+
+            while ((line = br.readLine()) != null) {
+
+                String[] parts = line.split(",");
+
+                for (int i=0; i<matchIdList.size(); i++){
+
+                    if (Integer.parseInt(parts[0]) == matchIdList.get(i)){  //This will make sure only selected items store in runs list based on match id
+                        runsList.add(Integer.parseInt(parts[17]));
+                    }
+
+                }
+
+            }
+            
+            //This will print the total extra runs for the selected year
+            System.out.println("Extra Runs Per Year");
+            System.out.println("=============================================");
+            System.out.println("Total extra runs for the year 2016 is : "+runsList.stream().mapToInt(i -> i).sum());
+
+            br.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    
+
 }
