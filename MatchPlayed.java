@@ -36,6 +36,13 @@ public class MatchPlayed {
 
     }
 
+    /**
+     * The function `getAllMatchesPlayedByYear` reads a CSV file containing match data, counts the
+     * number of matches played in each year, and prints the results.
+     * 
+     * @param path The path parameter is a string that represents the file path of the CSV file
+     * containing the matches data.
+     */
     public static void getAllMatchesPlayedByYear(String path){
         
         HashMap<String,Integer> matchesByYear = new HashMap<>();
@@ -68,6 +75,14 @@ public class MatchPlayed {
     }
 
 
+    /**
+     * The function `countMatchesWonByTeam` reads a CSV file containing match data, counts the number
+     * of matches won by each team, and prints the results.
+     * 
+     * @param path The path parameter is a string that represents the file path of the input file. This
+     * file should contain data about matches, with each line representing a match and each field
+     * separated by commas. The 11th field in each line represents the team that won the match.
+     */
     public static void countMatchesWonByTeam(String path) {
 
         HashMap<String, Integer> matchesWonByTeam = new HashMap<>();
@@ -101,7 +116,18 @@ public class MatchPlayed {
 
     }
 
-    // For the year 2016 get the extra runs conceded per team.
+    
+    /**
+     * The function `extraRunForTheYear` reads data from two CSV files (`matches.csv` and
+     * `deliveries.csv`), filters the matches for the year 2016, and calculates the total extra runs
+     * for that year.
+     * 
+     * @param matchPath The file path of the matches.csv file. This file contains information about
+     * cricket matches, including the match ID and the year of the match.
+     * @param deliveriesPath The path to the deliveries.csv file, which contains information about each
+     * delivery in a match. This file should have columns like match_id, inning, batting_team,
+     * bowling_team, etc.
+     */
     public static void extraRunForTheYear(String matchPath , String deliveriesPath){
 
         // This section will read the matches.csv file
