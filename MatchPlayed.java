@@ -80,8 +80,8 @@ public class MatchPlayed {
 
             while ((line = br.readLine()) != null) {
 
-                String[] parts = line.split(",");
-                matchesWonByTeam.put(parts[10], matchesWonByTeam.getOrDefault(parts[10], 0) + 1);
+                String[] matches = line.split(",");
+                matchesWonByTeam.put(matches[10], matchesWonByTeam.getOrDefault(matches[10], 0) + 1);
 
             }
 
@@ -116,13 +116,13 @@ public class MatchPlayed {
 
             while ((line = br.readLine()) != null) {
 
-                String[] parts = line.split(",");
+                String[] matches = line.split(",");
                 
-                int year = Integer.parseInt(parts[1]);
+                int year = Integer.parseInt(matches[1]);
 
                 // Mapping year of match file with match_id of deliveries file and adding ids in the matchIdList
                 if (year == 2016){
-                    matchIdList.add(Integer.parseInt(parts[0]));
+                    matchIdList.add(Integer.parseInt(matches[0]));
                 }
 
             }
@@ -146,12 +146,12 @@ public class MatchPlayed {
 
             while ((line = br.readLine()) != null) {
 
-                String[] parts = line.split(",");
+                String[] deliveries = line.split(",");
 
                 for (int i=0; i<matchIdList.size(); i++){
 
-                    if (Integer.parseInt(parts[0]) == matchIdList.get(i)){  // This will make sure only selected items store in runs list based on match id
-                        runsList.add(Integer.parseInt(parts[17]));
+                    if (Integer.parseInt(deliveries[0]) == matchIdList.get(i)){  // This will make sure only selected items store in runs list based on match id
+                        runsList.add(Integer.parseInt(deliveries[17]));
                     }
 
                 }
