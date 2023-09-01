@@ -9,10 +9,9 @@ import java.util.List;
 public class MatchPlayed {
     public static void main(String[] args) {
         
+        // Paths for the CSV files
         String matchPath = "/home/suresh/Downloads/matches.csv";
         String deliveriesPath = "/home/suresh/Downloads/deliveries.csv";
-
-        // GroupDocs.Merger m = new Merger("");
 
 
         // Number of matches played per year of all the years in IPL.
@@ -29,6 +28,9 @@ public class MatchPlayed {
 
         //For the year 2016 get the extra runs conceded per team.
         extraRunForTheYear(matchPath , deliveriesPath);
+
+        System.out.println("\n");
+        //================================================================================================================
         
 
 
@@ -99,10 +101,10 @@ public class MatchPlayed {
 
     }
 
-    //For the year 2016 get the extra runs conceded per team.
+    // For the year 2016 get the extra runs conceded per team.
     public static void extraRunForTheYear(String matchPath , String deliveriesPath){
 
-        //This section will read the matches.csv file
+        // This section will read the matches.csv file
 
         List<Integer> matchIdList = new ArrayList<>();
 
@@ -132,7 +134,7 @@ public class MatchPlayed {
         }
 
 
-        //This section will read the deliveries.csv file
+        // This section will read the deliveries.csv file
 
         List<Integer> runsList = new ArrayList<>();
 
@@ -148,7 +150,7 @@ public class MatchPlayed {
 
                 for (int i=0; i<matchIdList.size(); i++){
 
-                    if (Integer.parseInt(parts[0]) == matchIdList.get(i)){  //This will make sure only selected items store in runs list based on match id
+                    if (Integer.parseInt(parts[0]) == matchIdList.get(i)){  // This will make sure only selected items store in runs list based on match id
                         runsList.add(Integer.parseInt(parts[17]));
                     }
 
@@ -156,8 +158,8 @@ public class MatchPlayed {
 
             }
             
-            //This will print the total extra runs for the selected year
-            
+            // This will print the total extra runs for the selected year
+
             System.out.println("Extra Runs Per Year");
             System.out.println("=============================================");
             System.out.println("Total extra runs for the year 2016 is : "+runsList.stream().mapToInt(i -> i).sum());
