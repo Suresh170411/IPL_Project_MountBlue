@@ -2,8 +2,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MatchPlayed {
@@ -198,6 +200,15 @@ public class MatchPlayed {
 
     }
 
+    /**
+     * The function `economicBowler` reads data from two CSV files, filters the data based on a
+     * specific condition, calculates the economy rate for each bowler, and sorts the bowlers based on
+     * their economy rate.
+     * 
+     * @param path1 The path to the file containing match data. This file should be in CSV format and
+     * have the following columns: match_id, year.
+     * @param path2 The path to the file containing the deliveries data.
+     */
     public static void economicBowler(String path1, String path2){
         
         List<Integer> matchIdList = new ArrayList<>();
@@ -297,7 +308,8 @@ public class MatchPlayed {
                 players.put(bowlerList.get(i), averages.get(i));
             }
 
-            System.out.println(players);
+            // System.out.println(players);
+            sortEconomyBowler(players);
 
             br.close();
 
@@ -306,5 +318,20 @@ public class MatchPlayed {
         }
     }
     
+    /**
+     * The function sorts a HashMap of players based on their economy rate and prints the sorted list.
+     * 
+     * @param players A HashMap with String keys representing player names and Double values
+     * representing their economy rates.
+     */
+    public static void sortEconomyBowler(HashMap<String,Double> players){
+        List<Map.Entry<String,Double>> playerList = new ArrayList<>(players.entrySet());
+
+        Collections.sort(playerList, (l1,l2)-> l1.getValue() > l2.getValue() ? 1 : -1);
+
+        for (String s : players.keySet()){
+            System.out.println(s + "==" + players.get(s));
+        }
+    }
 
 }
