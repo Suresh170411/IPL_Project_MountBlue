@@ -32,7 +32,7 @@ public class MatchPlayed {
         System.out.println("\n");
         //================================================================================================================
         
-
+        economicBowler(matchPath, deliveriesPath);
 
     }
 
@@ -198,6 +198,113 @@ public class MatchPlayed {
 
     }
 
+    public static void economicBowler(String path1, String path2){
+        
+        List<Integer> matchIdList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path1))) {
+            
+            String line;
+
+            br.readLine();
+
+            while ((line = br.readLine()) != null) {
+
+                String[] matches = line.split(",");
+                
+                int year = Integer.parseInt(matches[1]);
+
+                // Mapping year of match file with match_id of deliveries file and adding ids in the matchIdList
+                if (year == 2015){
+                    matchIdList.add(Integer.parseInt(matches[0]));
+                }
+
+            }
+
+            br.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        List<String> bowlerList = new ArrayList<>();
+
+        List<Integer> totalRunsList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path2))) {
+            
+            String line;
+
+            br.readLine();
+
+            while ((line = br.readLine()) != null) {
+
+                String[] deliveries = line.split(",");
+
+                for (int i=0; i<matchIdList.size(); i++){
+
+                    if (Integer.parseInt(deliveries[0]) == matchIdList.get(i)){  // This will make sure only selected items store in runs list based on match id
+                        bowlerList.add(deliveries[8]);
+                        totalRunsList.add(Integer.parseInt(deliveries[17]));
+                    }
+
+                }
+
+            }
+            
+            // This will print the total extra runs for the selected year
+
+            System.out.println("Extra Runs Per Year");
+            System.out.println("=============================================");
+            
+
+            HashMap<String, Integer> bowlerWithTotalRuns = new HashMap<>();
+
+            for (int i=0; i<bowlerList.size(); i++){
+                bowlerWithTotalRuns.put(bowlerList.get(i), bowlerWithTotalRuns.getOrDefault(bowlerList.get(i),0)+totalRunsList.get(i));
+            }
+
+            HashMap<String, Integer> overs = new HashMap<>();
+
+            for (String s : bowlerList){
+                overs.put(s, overs.getOrDefault(s, 0)+1);
+            }
+
+            bowlerList.clear();
+            
+            for (String s : overs.keySet()){
+                bowlerList.add(s);
+            }
+
+            // System.out.println(bowlerList);
+
+            System.out.println("xxxxxxxxxxxxxxxxxxxxxxx");
+
+
+            List<Integer> bowlerTotalRunsList = new ArrayList<>(bowlerWithTotalRuns.values());
+            List<Integer> bowlerTotalOversList = new ArrayList<>(overs.values());
+
+            List<Double> averages = new ArrayList<>();
+
+            for (int i=0; i<bowlerTotalRunsList.size(); i++){
+                averages.add((double)bowlerTotalRunsList.get(i)/bowlerTotalOversList.get(i));
+            }
+
+            HashMap<String, Double> players = new HashMap<>();
+
+            for (int i=0; i<averages.size(); i++){
+                players.put(bowlerList.get(i), averages.get(i));
+            }
+
+            System.out.println(players);
+
+            br.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
 
 }
