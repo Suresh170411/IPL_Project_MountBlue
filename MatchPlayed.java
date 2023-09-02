@@ -3,9 +3,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class MatchPlayed {
@@ -179,7 +182,7 @@ public class MatchPlayed {
                 for (int i=0; i<matchIdList.size(); i++){
 
                     if (Integer.parseInt(deliveries[0]) == matchIdList.get(i)){  // This will make sure only selected items store in runs list based on match id
-                        runsList.add(Integer.parseInt(deliveries[17]));
+                        runsList.add(Integer.parseInt(deliveries[16]));
                     }
 
                 }
@@ -189,7 +192,7 @@ public class MatchPlayed {
             // This will print the total extra runs for the selected year
 
             System.out.println("Extra Runs Per Year");
-            System.out.println("=============================================");
+            System.out.println("===========================================");
             System.out.println("Total extra runs for the year 2016 is : "+runsList.stream().mapToInt(i -> i).sum());
 
             br.close();
@@ -264,10 +267,10 @@ public class MatchPlayed {
 
             }
             
-            // This will print the total extra runs for the selected year
+            // This Will Print The Total Extra Runs For The Selected Year
 
-            System.out.println("Extra Runs Per Year");
-            System.out.println("=============================================");
+            System.out.println("Economy Of Bowlers In Year 2015");
+            System.out.println("=================================");
             
 
             HashMap<String, Integer> bowlerWithTotalRuns = new HashMap<>();
@@ -288,10 +291,6 @@ public class MatchPlayed {
                 bowlerList.add(s);
             }
 
-            // System.out.println(bowlerList);
-
-            System.out.println("xxxxxxxxxxxxxxxxxxxxxxx");
-
 
             List<Integer> bowlerTotalRunsList = new ArrayList<>(bowlerWithTotalRuns.values());
             List<Integer> bowlerTotalOversList = new ArrayList<>(overs.values());
@@ -308,7 +307,7 @@ public class MatchPlayed {
                 players.put(bowlerList.get(i), averages.get(i));
             }
 
-            // System.out.println(players);
+            // This Will Print The Top 10 Economy Bowlers
             sortEconomyBowler(players);
 
             br.close();
@@ -327,11 +326,28 @@ public class MatchPlayed {
     public static void sortEconomyBowler(HashMap<String,Double> players){
         List<Map.Entry<String,Double>> playerList = new ArrayList<>(players.entrySet());
 
-        Collections.sort(playerList, (l1,l2)-> l1.getValue() > l2.getValue() ? 1 : -1);
+        Collections.sort(playerList, new Comparator<Map.Entry<String,Double>>() {
 
-        for (String s : players.keySet()){
-            System.out.println(s + "==" + players.get(s));
+            @Override
+            public int compare(Entry<String, Double> o1, Entry<String, Double> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+            
+        });
+
+        LinkedHashMap<String,Double> sortedPlayers = new LinkedHashMap<>();
+
+        for (Entry<String, Double> e : playerList){
+            sortedPlayers.put(e.getKey(), e.getValue());
         }
+
+        sortedPlayers
+            .entrySet()
+            .stream()
+            .limit(10)
+            .forEach(s -> System.out.println("Bowler : " + s.getKey()+" -- "+ String.format("%.2f", s.getValue())));
+
+        
     }
 
 }
