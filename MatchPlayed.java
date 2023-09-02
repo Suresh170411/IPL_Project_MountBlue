@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 
@@ -64,13 +65,18 @@ public class MatchPlayed {
                 matchesByYear.put(match[1], matchesByYear.getOrDefault(match[1], 0)+1);
             }
 
+            System.out.println("================");
             System.out.println("Matches Played");
-            System.out.println("=================");
+            System.out.println("================");
 
-            for (String s : matchesByYear.keySet()){
-                System.out.println("Year "+s+" : " + matchesByYear.get(s));
-                System.out.println("-----------------");
-        }
+            TreeMap<String,Integer> sortedList = new TreeMap<>();
+
+            sortedList.putAll(matchesByYear);
+
+            for (String s : sortedList.keySet()){
+                System.out.println("Year : " + s + " | " + sortedList.get(s));
+                System.out.println("----------------");
+            }
 
             br.close();
 
@@ -105,6 +111,7 @@ public class MatchPlayed {
 
             }
 
+            System.out.println("=====================================================");
             System.out.println("Number Of Matches Won By Teams");
             System.out.println("=====================================================");
 
@@ -169,6 +176,8 @@ public class MatchPlayed {
 
         List<Integer> runsList = new ArrayList<>();
 
+        List<String> teamList = new ArrayList<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(deliveriesPath))) {
             
             String line;
@@ -183,6 +192,7 @@ public class MatchPlayed {
 
                     if (Integer.parseInt(deliveries[0]) == matchIdList.get(i)){  // This will make sure only selected items store in runs list based on match id
                         runsList.add(Integer.parseInt(deliveries[16]));
+                        teamList.add(deliveries[3]);
                     }
 
                 }
@@ -191,9 +201,23 @@ public class MatchPlayed {
             
             // This will print the total extra runs for the selected year
 
-            System.out.println("Extra Runs Per Year");
-            System.out.println("===========================================");
+            System.out.println("===============================================");
+            System.out.println("Extra Runs In Year 2016");
+            System.out.println("===============================================");
             System.out.println("Total extra runs for the year 2016 is : "+runsList.stream().mapToInt(i -> i).sum());
+            System.out.println("===============================================");
+
+            HashMap<String,Integer> teamsExtraRun = new HashMap<>();
+
+            for (int i=0; i<teamList.size(); i++){
+                // System.out.println(teamList.get(i)+"=="+runsList.get(i));
+                teamsExtraRun.put(teamList.get(i), teamsExtraRun.getOrDefault(teamList.get(i), 0)+runsList.get(i));
+            }
+
+            for (String s : teamsExtraRun.keySet()){
+                System.out.println("Team : " + s +" | Runs : " + teamsExtraRun.get(s));
+                System.out.println("-----------------------------------------------");
+            }
 
             br.close();
 
@@ -269,8 +293,9 @@ public class MatchPlayed {
             
             // This Will Print The Total Extra Runs For The Selected Year
 
-            System.out.println("Economy Of Bowlers In Year 2015");
-            System.out.println("=================================");
+            System.out.println("======================================");
+            System.out.println("Top 10 Economy Of Bowlers In Year 2015");
+            System.out.println("======================================");
             
 
             HashMap<String, Integer> bowlerWithTotalRuns = new HashMap<>();
