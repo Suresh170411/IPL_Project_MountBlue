@@ -324,7 +324,7 @@ public class MatchPlayed {
             List<Double> averages = new ArrayList<>();
 
             for (int i=0; i<bowlerTotalRunsList.size(); i++){
-                averages.add((double)bowlerTotalRunsList.get(i)/bowlerTotalOversList.get(i));
+                averages.add((double)bowlerTotalRunsList.get(i)/(bowlerTotalOversList.get(i)/6));
             }
 
             HashMap<String, Double> players = new HashMap<>();
@@ -373,7 +373,6 @@ public class MatchPlayed {
             .limit(10)
             .forEach(s -> System.out.println("Bowler : " + s.getKey()+" -- "+ String.format("%.2f", s.getValue())));
 
-        
     }
 
 }
